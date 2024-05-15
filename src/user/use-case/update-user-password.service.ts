@@ -15,7 +15,7 @@ export class UpdateUserPasswordService {
 
   async updateUserPassword(id: number, data: UserPasswordUpdateDto) {
     const user = await this.userRepository.findOneBy({ id });
-    user.password = await this.stringHasherService.stringHasher(data.password);
+    user.password = await this.stringHasherService.HashString(data.password);
 
     await this.userRepository.save(user);
 

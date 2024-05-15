@@ -15,7 +15,7 @@ export class CreateUserService {
 
   async createUser(data: UserCreateDto) {
     try {
-      data.password = await this.stringHasherService.stringHasher(data.password);
+      data.password = await this.stringHasherService.HashString(data.password);
       return this.userRepository.save(data);
     } catch (error) {
       console.log(error);
