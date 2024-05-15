@@ -20,4 +20,9 @@ export class UserCreateDto {
     message: "L'age doit contenir au moins 3 caractères",
   })
   age: number;
+
+  @MinLength(3, {
+    message: 'La ville de naissance doit contenir au moins 3 caractères',
+  })
+  birthplace: string;
 }

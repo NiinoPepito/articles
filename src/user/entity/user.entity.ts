@@ -16,4 +16,7 @@ export class User {
 
   @Column({ type: 'int', nullable: true })
   age: number;
+
+  @Column({ type: 'varchar', nullable: true })
+  birthplace: string;
 }
