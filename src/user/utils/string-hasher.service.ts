@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { StringHasherServiceInterface } from './string-hasher.service.interface';
 
 Injectable();
-export class StringHasherService {
+export class StringHasherService implements StringHasherServiceInterface {
 
   async stringHasher(password: string) {
     try {
