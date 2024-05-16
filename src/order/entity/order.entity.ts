@@ -77,7 +77,7 @@ export class Order {
 
   pay() {
     if (this.status !== OrderStatus.CREATED) {
-      throw new Error('L\'ordre n\'est pas en cours de création');
+      throw new Error('L\'order n\'est pas en cours de création');
     }
     this.paidAt = new Date();
     this.status = OrderStatus.PAID;
@@ -89,7 +89,7 @@ export class Order {
       this.status !== OrderStatus.CREATED &&
       this.status !== OrderStatus.PAID
     ) {
-      throw new Error('L\'ordre n\'est pas en cours de création ou payée');
+      throw new Error('L\'order n\'est pas en cours de création ou payée');
     }
     this.shippingAddress = data.shippingAddress;
     this.shippingMethod = data.shippingMethod;
@@ -106,7 +106,7 @@ export class Order {
       this.status !== OrderStatus.CREATED &&
       this.status !== OrderStatus.PAID
     ) {
-      throw new Error('L\'ordre n\'est pas en cours de création ou payée');
+      throw new Error('L\'order n\'est pas en cours de création ou payée');
     }
     this.invoiceAddress = data.invoiceAdress;
     this.invoiceAddressSetAt = new Date();
