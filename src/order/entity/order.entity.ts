@@ -31,6 +31,7 @@ export class Order {
       }
       this.createdAt = new Date();
       this.updatedAt = new Date();
+      this.status = 'En attente';
       this.customer = createOrderData.customer;
       this.items = createOrderData.items;
       this.total = 10 * createOrderData.items.length;

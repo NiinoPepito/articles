@@ -14,7 +14,6 @@ export class CreateOrderService {
   async createOrder(data: OrderCreateDto) {
     try {
       const order = new Order(data)
-      order.status = 'En attente';
       return this.orderRepository.save(order);
     } catch (error) {
       console.log(error);
