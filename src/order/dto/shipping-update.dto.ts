@@ -1,9 +1,9 @@
 import { IsString, isString } from "class-validator";
 
-export class OrderCreateDto {
+export class ShippingUpdateDto {
   @IsString()
-  customer: string;
+  shippingAddress: string;
 
   @IsString()
-  items: string[];
+  shippingMethod: string;
 }

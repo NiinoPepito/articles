@@ -1,18 +1,12 @@
-import { MinLength } from 'class-validator';
+import { IsString, isString, MinLength } from "class-validator";
 
 export class ArticleCreateDto {
-  @MinLength(3, {
-    message: 'Le titre doit contenir au moins 3 caractères',
-  })
+  @IsString()
   title: string;
 
-  @MinLength(3, {
-    message: 'Le contenu doit contenir au moins 3 caractères',
-  })
-  content: string;
-
-  @MinLength(3, {
-    message: "L'auteur doit contenir au moins 3 caractères",
-  })
+  @IsString()
+  content: string
+  ;
+  @IsString()
   author: string;
 }

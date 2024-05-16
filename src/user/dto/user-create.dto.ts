@@ -1,28 +1,19 @@
-import { MinLength } from 'class-validator';
+import { IsNumber, isNumber, IsString, isString, MinLength } from "class-validator";
 
 export class UserCreateDto {
-  @MinLength(3, {
-    message: 'Le prénom doit contenir au moins 3 caractères',
-  })
+
+  @IsString()
   firstname: string;
 
-  @MinLength(3, {
-    message: 'Le nom doit contenir au moins 3 caractères',
-  })
+  @IsString()
   lastname: string;
 
-  @MinLength(3, {
-    message: 'Le mot de passe doit contenir au moins 3 caractères',
-  })
+  @IsString()
   password: string;
 
-  @MinLength(3, {
-    message: "L'age doit contenir au moins 3 caractères",
-  })
+  @IsNumber()
   age: number;
 
-  @MinLength(3, {
-    message: 'La ville de naissance doit contenir au moins 3 caractères',
-  })
+  @IsString()
   birthplace: string;
 }
