@@ -13,6 +13,9 @@ export class Order {
   @Column({ type: 'date'})
   updatedAt: Date;
 
+  @Column({ type: 'date' , nullable: true})
+  paidAt: Date;
+
   @Column({ type: 'varchar' })
   customer: string;
 
@@ -31,10 +34,17 @@ export class Order {
       }
       this.createdAt = new Date();
       this.updatedAt = new Date();
+      this.paidAt = null;
       this.status = 'En attente';
       this.customer = createOrderData.customer;
       this.items = createOrderData.items;
       this.total = 10 * createOrderData.items.length;
     }
+  }
+
+  pay() {
+    this.paidAt = new Date();
+    this.status = 'Payé';
+    this.updatedAt = new Date();
   }
 }
