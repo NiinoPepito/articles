@@ -13,8 +13,6 @@ export class PayOrderService {
   async payOrder(id: number) {
     const order = await this.orderRepository.findOneBy({ id });
     order.pay();
-    await this.orderRepository.save(order);
-
-    return order;
+    return await this.orderRepository.save(order);
   }
 }
