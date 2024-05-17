@@ -6,9 +6,10 @@ import { CreateOrderService } from "./use-case/create-order.service";
 import { PayOrderService } from "./use-case/pay-order.service";
 import { UpdateShippingService } from "./use-case/update-shipping.service";
 import { UpdateInvoiceAdressService } from "./use-case/update-invoice-adress.service";
+import { OrderItem } from "./entity/order-item.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Order])],
+  imports: [TypeOrmModule.forFeature([Order, OrderItem])],
   controllers: [OrderController],
   providers: [
     CreateOrderService,

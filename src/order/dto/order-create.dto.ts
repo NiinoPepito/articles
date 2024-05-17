@@ -1,9 +1,9 @@
-import { IsString, isString } from "class-validator";
+import { IsArray, IsString } from "class-validator";
 
 export class OrderCreateDto {
   @IsString()
   customer: string;
 
-  @IsString()
+  @IsArray()
   items: string[];
 }

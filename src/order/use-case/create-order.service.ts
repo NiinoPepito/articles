@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Order } from "../entity/order.entity";
-import { OrderCreateDto } from "../dto/order-create.dto";
+import { Order } from '../entity/order.entity';
+import { OrderCreateDto } from '../dto/order-create.dto';
 
 Injectable();
 export class CreateOrderService {
@@ -14,6 +14,7 @@ export class CreateOrderService {
   async createOrder(data: OrderCreateDto) {
     try {
       const order = new Order(data)
+
       return this.orderRepository.save(order);
     } catch (error) {
       console.log(error);

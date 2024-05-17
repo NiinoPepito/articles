@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { OrderCreateDto } from '../dto/order-create.dto';
 import { ShippingUpdateDto } from '../dto/shipping-update.dto';
 import { InvoiceAdressUpdateDto } from '../dto/invoice-adress-update.dto';
+import { OrderItem } from './order-item.entity';
 
 @Entity()
 export class Order {
@@ -12,6 +13,47 @@ export class Order {
     InvoiceSet: 'InvoiceSet',
     Cancelled: 'Cancelled',
   };
+
+  constructor(data?: OrderCreateDto) {
+    if (data) {
+      if (data.items.length > 3) {
+        throw new Error("Le nombre d'items ne peut pas dépasser trois.");
+      }
+      this.createdAt = new Date();
+      this.updatedAt = new Date();
+      this.paidAt = null;
+      this.status = Order.OrderStatus.Cart;
+      this.customer = data.customer;
+      this.items = [];
+      if (data) {
+        this.items = [];
+        for (const item of data.items) {
+          const itemSave = new OrderItem(item);
+
+          let exist = false;
+          for (const orderItem of this.items) {
+            if (orderItem.product == itemSave.product) {
+              orderItem.quantity++;
+              this.total += orderItem.price;
+              exist = true;
+            }
+          }
+          if (!exist){
+            this.items.push(itemSave);
+            this.total += itemSave.price;
+            this.updatedAt = new Date();
+          }
+        }
+      }
+
+      this.total = 10 * data.items.length;
+      this.shippingAddress = null;
+      this.shippingMethod = null;
+      this.invoiceAddress = null;
+      this.shippingMethodSetAt = null;
+      this.invoiceAddressSetAt = null;
+    }
+  }
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -28,8 +70,11 @@ export class Order {
   @Column({ type: 'varchar' })
   customer: string;
 
-  @Column({ type: 'json' })
-  items: string[];
+  @OneToMany(() => OrderItem, (order) => order.id, {
+    nullable: true,
+    cascade: true,
+  })
+  items: OrderItem[];
 
   @Column({ type: 'varchar' })
   status: string;
@@ -51,26 +96,6 @@ export class Order {
 
   @Column({ type: 'date', nullable: true })
   invoiceAddressSetAt: Date;
-
-  constructor(createOrderData?: OrderCreateDto) {
-    if (createOrderData) {
-      if (createOrderData.items.length > 3) {
-        throw new Error("Le nombre d'items ne peut pas dépasser trois.");
-      }
-      this.createdAt = new Date();
-      this.updatedAt = new Date();
-      this.paidAt = null;
-      this.status = Order.OrderStatus.Cart;
-      this.customer = createOrderData.customer;
-      this.items = createOrderData.items;
-      this.total = 10 * createOrderData.items.length;
-      this.shippingAddress = null;
-      this.shippingMethod = null;
-      this.invoiceAddress = null;
-      this.shippingMethodSetAt = null;
-      this.invoiceAddressSetAt = null;
-    }
-  }
 
   pay() {
     if (this.status !== Order.OrderStatus.Cart) {
