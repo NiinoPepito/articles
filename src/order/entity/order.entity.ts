@@ -25,24 +25,22 @@ export class Order {
       this.status = Order.OrderStatus.Cart;
       this.customer = data.customer;
       this.items = [];
-      if (data) {
-        this.items = [];
-        for (const item of data.items) {
-          const itemSave = new OrderItem(item);
+      this.items = [];
+      for (const item of data.items) {
+        const itemSave = new OrderItem(item);
 
-          let exist = false;
-          for (const orderItem of this.items) {
-            if (orderItem.product == itemSave.product) {
-              orderItem.quantity++;
-              this.total += orderItem.price;
-              exist = true;
-            }
+        let exist = false;
+        for (const orderItem of this.items) {
+          if (orderItem.product == itemSave.product) {
+            orderItem.incrementQuantity();
+            this.total += orderItem.price;
+            exist = true;
           }
-          if (!exist){
-            this.items.push(itemSave);
-            this.total += itemSave.price;
-            this.updatedAt = new Date();
-          }
+        }
+        if (!exist){
+          this.items.push(itemSave);
+          this.total += itemSave.price;
+          this.updatedAt = new Date();
         }
       }
 
