@@ -1,71 +1,68 @@
 import {
   Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
+  Controller, Get, Param, ParseIntPipe,
+  Post, Put,
 } from '@nestjs/common';
 import { CreateUserService } from '../use-case/create-user.service';
 import { UserCreateDto } from '../dto/user-create.dto';
-import { GetUsersService } from "../use-case/get-users.service";
-import { GetUserByIdService } from "../use-case/get-user-by-id.service";
-import { GetUsersByBirthplaceService } from "../use-case/get-user-birthplace.service";
-import { UserUpdateDto } from "../dto/user-update.dto";
-import { UpdateUserService } from "../use-case/update-user.service";
-import { UserPasswordUpdateDto } from "../dto/user-password-update.dto";
-import { UpdateUserPasswordService } from "../use-case/update-user-password.service";
-import passport from "passport";
+import { GetAllUsersService } from '../use-case/get-all-users.service';
+import { GetUserByIdService } from '../use-case/get-user-by-id.service';
+import { UpdateUserService } from '../use-case/update-user.service';
+import { GetUsersByBirthdayCityService } from '../use-case/get-users-by-birthday-city.service';
+import { UserUpdateDto } from '../dto/user-update.dto';
+import { UserPasswordUpdateDto } from '../dto/user-password-update.dto';
+import { UpdateUserPasswordService } from '../use-case/update-user-password.service';
+import { GetUserByEmailService } from '../use-case/get-user-by-email.service';
 
 
 @Controller('users')
 export class UserController {
-
   constructor(
     private readonly createUserService: CreateUserService,
-    private readonly getUsersService: GetUsersService,
+    private readonly getAllUsersService: GetAllUsersService,
     private readonly getUserByIdService: GetUserByIdService,
-    private readonly getUsersByBirthplaceService: GetUsersByBirthplaceService,
     private readonly updateUserService: UpdateUserService,
+    private readonly getUsersByBirthdayCityService: GetUsersByBirthdayCityService,
     private readonly updateUserPasswordService: UpdateUserPasswordService,
+    private readonly getUserByEmailService: GetUserByEmailService,
   ) {}
-
-  @Get()
-  getAllUsers() {
-    return this.getUsersService.getAllUsers();
-  }
-
-  // faire un get par ville de naissance
-  @Get('by-birthplace/:birthplace')
-  getUsersByBirthplace(@Param('birthplace') birthplace: string) {
-    return this.getUsersByBirthplaceService.getUsersByBirthplace(birthplace);
-  }
-
-  @Get(':id')
-  getOneUserById(@Param('id', ParseIntPipe) id: number) {
-    return this.getUserByIdService.getOneUserById(id);
-  }
 
   @Post()
   createUser(@Body() data: UserCreateDto) {
     return this.createUserService.createUser(data);
   }
 
+  @Get()
+  getAllUsers() {
+    return this.getAllUsersService.getAllUsers();
+  }
+
+  @Get(':id')
+  getUserById(@Param('id', ParseIntPipe) id: number) {
+    return this.getUserByIdService.getOneUserById(id);
+  }
+
+  @Get('by-birthday-city/:city')
+  getUsersByBirthdayCity(@Param('city') city: string) {
+    return this.getUsersByBirthdayCityService.getUsersByBirthdayCity(city);
+  }
+
+  @Get('by-email/:email')
+  getUserByEmail(@Param('email') email: string) {
+    return this.getUserByEmailService.getUserByEmail(email);
+  }
+
   @Put(':id')
-  updateUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() data: UserUpdateDto,
-  ) {
+  updateUser(@Param('id', ParseIntPipe) id: number, @Body() data: UserUpdateDto) {
     return this.updateUserService.updateUser(id, data);
   }
 
   @Put(':id/password')
   updateUserPassword(
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: UserPasswordUpdateDto,
+    @Body() password: UserPasswordUpdateDto
   ) {
-    return this.updateUserPasswordService.updateUserPassword(id, data);
+    return this.updateUserPasswordService.updateUserPassword(id, password);
   }
+
 }

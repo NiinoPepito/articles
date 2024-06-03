@@ -1,18 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { OrderCreateDto } from '../dto/order-create.dto';
+import { Order } from '../entity/order.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Article } from '../../article/entity/article.entity';
 import { Repository } from 'typeorm';
-import { Order } from "../entity/order.entity";
-
-Injectable();
 export class PayOrderService {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
-  ) {}
+  ) {
+  }
 
   async payOrder(id: number) {
     const order = await this.orderRepository.findOneBy({ id });
     order.pay();
-    return await this.orderRepository.save(order);
+    await this.orderRepository.save(order);
+
+    return order;
   }
 }
